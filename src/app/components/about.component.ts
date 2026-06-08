@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
 
 interface TimelineItem {
   date: string;
@@ -12,7 +11,7 @@ interface TimelineItem {
 @Component({
   selector: 'app-about',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   template: `
     <section class="about-section section-padding">
       <div class="container">
@@ -97,45 +96,50 @@ interface TimelineItem {
             
             <!-- Desktop Winding Snake Timeline -->
             <div class="snake-timeline">
-              <div 
-                *ngFor="let item of timeline; let i = index" 
-                class="snake-node"
-                [style.grid-row]="getGridRow(i)"
-                [style.grid-column]="getGridCol(i)"
-              >
-                <div *ngIf="i === 0" class="endpoint-label start">Start</div>
-                <div *ngIf="i === timeline.length - 1" class="endpoint-label end">End</div>
-
-                <div class="snake-card">
-                  <span class="timeline-date">{{ item.date }}</span>
-                  <h4>{{ item.title }}</h4>
-                  <div class="timeline-sub">{{ item.subtitle }}</div>
-                  <p class="timeline-desc">{{ item.description }}</p>
-                </div>
-                
+              @for (item of timeline; track item.title; let i = $index) {
                 <div 
-                  *ngIf="i < timeline.length - 1" 
-                  [class]="'connector ' + getConnectorClass(i)"
-                ></div>
-              </div>
+                  class="snake-node"
+                  [style.grid-row]="getGridRow(i)"
+                  [style.grid-column]="getGridCol(i)"
+                >
+                  @if (i === 0) {
+                    <div class="endpoint-label start">Start</div>
+                  }
+                  @if (i === timeline.length - 1) {
+                    <div class="endpoint-label end">End</div>
+                  }
+
+                  <div class="snake-card">
+                    <span class="timeline-date">{{ item.date }}</span>
+                    <h4>{{ item.title }}</h4>
+                    <div class="timeline-sub">{{ item.subtitle }}</div>
+                    <p class="timeline-desc">{{ item.description }}</p>
+                  </div>
+                  
+                  @if (i < timeline.length - 1) {
+                    <div [class]="'connector ' + getConnectorClass(i)"></div>
+                  }
+                </div>
+              }
             </div>
 
             <!-- Mobile Vertical Timeline -->
             <div class="timeline-wrapper">
-              <div 
-                *ngFor="let item of timeline" 
-                class="timeline-node" 
-                [class.left]="item.align === 'left'" 
-                [class.right]="item.align === 'right'"
-              >
-                <div class="timeline-marker"></div>
-                <div class="timeline-box">
-                  <span class="timeline-date">{{ item.date }}</span>
-                  <h4>{{ item.title }}</h4>
-                  <div class="timeline-sub">{{ item.subtitle }}</div>
-                  <p class="timeline-desc">{{ item.description }}</p>
+              @for (item of timeline; track item.title) {
+                <div 
+                  class="timeline-node" 
+                  [class.left]="item.align === 'left'" 
+                  [class.right]="item.align === 'right'"
+                >
+                  <div class="timeline-marker"></div>
+                  <div class="timeline-box">
+                    <span class="timeline-date">{{ item.date }}</span>
+                    <h4>{{ item.title }}</h4>
+                    <div class="timeline-sub">{{ item.subtitle }}</div>
+                    <p class="timeline-desc">{{ item.description }}</p>
+                  </div>
                 </div>
-              </div>
+              }
             </div>
           </div>
 

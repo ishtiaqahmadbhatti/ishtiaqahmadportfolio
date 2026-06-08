@@ -1,5 +1,4 @@
 import { Component, OnInit, HostListener, signal, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 
 interface ThemeOption {
@@ -11,7 +10,7 @@ interface ThemeOption {
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   template: `
     <header class="header" [class.scrolled]="isScrolled()">
       <div class="container navbar">
@@ -23,29 +22,32 @@ interface ThemeOption {
         <div class="desktop-controls">
           <nav class="desktop-nav">
             <ul class="nav-links">
-              <li *ngFor="let link of navLinks">
-                <a 
-                  [href]="'#' + link.id" 
-                  [class.active]="activeSection() === link.id"
-                  (click)="scrollToSection($event, link.id)"
-                >
-                  {{ link.label }}
-                </a>
-              </li>
+              @for (link of navLinks; track link.id) {
+                <li>
+                  <a 
+                    [href]="'#' + link.id" 
+                    [class.active]="activeSection() === link.id"
+                    (click)="scrollToSection($event, link.id)"
+                  >
+                    {{ link.label }}
+                  </a>
+                </li>
+              }
             </ul>
           </nav>
 
           <!-- Theme Palette Selector -->
           <div class="theme-palette">
-            <button 
-              *ngFor="let theme of themes" 
-              class="theme-dot" 
-              [class.active]="activeTheme() === theme.id"
-              [style.background-color]="theme.color"
-              (click)="setTheme(theme.id)"
-              [attr.aria-label]="'Switch to ' + theme.name + ' theme'"
-              [title]="theme.name + ' Theme'"
-            ></button>
+            @for (theme of themes; track theme.id) {
+              <button 
+                class="theme-dot" 
+                [class.active]="activeTheme() === theme.id"
+                [style.background-color]="theme.color"
+                (click)="setTheme(theme.id)"
+                [attr.aria-label]="'Switch to ' + theme.name + ' theme'"
+                [title]="theme.name + ' Theme'"
+              ></button>
+            }
           </div>
         </div>
 
@@ -53,14 +55,15 @@ interface ThemeOption {
         <div class="mobile-controls">
           <!-- Theme dots in mobile bar -->
           <div class="theme-palette mobile-inline">
-            <button 
-              *ngFor="let theme of themes" 
-              class="theme-dot" 
-              [class.active]="activeTheme() === theme.id"
-              [style.background-color]="theme.color"
-              (click)="setTheme(theme.id)"
-              [title]="theme.name + ' Theme'"
-            ></button>
+            @for (theme of themes; track theme.id) {
+              <button 
+                class="theme-dot" 
+                [class.active]="activeTheme() === theme.id"
+                [style.background-color]="theme.color"
+                (click)="setTheme(theme.id)"
+                [title]="theme.name + ' Theme'"
+              ></button>
+            }
           </div>
 
           <button 
@@ -79,15 +82,17 @@ interface ThemeOption {
       <!-- Mobile Navigation Menu -->
       <div class="mobile-nav" [class.open]="isMenuOpen()">
         <ul class="mobile-nav-links">
-          <li *ngFor="let link of navLinks">
-            <a 
-              [href]="'#' + link.id" 
-              [class.active]="activeSection() === link.id"
-              (click)="scrollToSection($event, link.id)"
-            >
-              {{ link.label }}
-            </a>
-          </li>
+          @for (link of navLinks; track link.id) {
+            <li>
+              <a 
+                [href]="'#' + link.id" 
+                [class.active]="activeSection() === link.id"
+                (click)="scrollToSection($event, link.id)"
+              >
+                {{ link.label }}
+              </a>
+            </li>
+          }
         </ul>
       </div>
     </header>

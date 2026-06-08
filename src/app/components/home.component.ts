@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { HeroComponent } from './hero.component';
 import { AboutComponent } from './about.component';
 import { SkillsComponent } from './skills.component';
@@ -12,7 +11,6 @@ import { ContactComponent } from './contact.component';
   selector: 'app-home',
   standalone: true,
   imports: [
-    CommonModule,
     HeroComponent,
     AboutComponent,
     SkillsComponent,

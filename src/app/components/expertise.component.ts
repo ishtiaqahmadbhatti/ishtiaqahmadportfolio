@@ -1,5 +1,4 @@
 import { Component, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
 
 interface SubSection {
   title: string;
@@ -17,7 +16,7 @@ interface ExpertiseTab {
 @Component({
   selector: 'app-expertise',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   template: `
     <section class="expertise-section section-padding">
       <div class="container">
@@ -28,40 +27,47 @@ interface ExpertiseTab {
           <!-- Tab Bar Navigation -->
           <div class="tabs-scroll-wrapper">
             <div class="tabs-bar">
-              <button 
-                *ngFor="let tab of devOpsTabs" 
-                class="tab-btn" 
-                [class.active]="activeDevOpsTabId() === tab.id"
-                (click)="setActiveDevOpsTab(tab.id)"
-              >
-                <i [class]="tab.icon + ' tab-icon'"></i>
-                <span>{{ tab.label }}</span>
-              </button>
+              @for (tab of devOpsTabs; track tab.id) {
+                <button 
+                  class="tab-btn" 
+                  [class.active]="activeDevOpsTabId() === tab.id"
+                  (click)="setActiveDevOpsTab(tab.id)"
+                >
+                  <i [class]="tab.icon + ' tab-icon'"></i>
+                  <span>{{ tab.label }}</span>
+                </button>
+              }
             </div>
           </div>
 
           <!-- Tab Content Display -->
-          <div class="tab-content" *ngIf="activeDevOpsTab() as tab">
-            <div class="tab-header-details">
-              <div class="tab-title-group">
-                <i [class]="tab.icon + ' tab-glow-icon'"></i>
-                <h3>{{ tab.label }} Specialization</h3>
+          @if (activeDevOpsTab(); as tab) {
+            <div class="tab-content">
+              <div class="tab-header-details">
+                <div class="tab-title-group">
+                  <i [class]="tab.icon + ' tab-glow-icon'"></i>
+                  <h3>{{ tab.label }} Specialization</h3>
+                </div>
+                <p class="tab-desc">{{ tab.description }}</p>
               </div>
-              <p class="tab-desc">{{ tab.description }}</p>
-            </div>
-            
-            <div class="details-grid">
-              <div class="detail-card animate-fade-in" *ngFor="let sec of tab.sections">
-                <h4>{{ sec.title }}</h4>
-                <ul class="detail-list">
-                  <li *ngFor="let pt of sec.points">
-                    <i class="fas fa-check-circle check-icon"></i>
-                    <span>{{ pt }}</span>
-                  </li>
-                </ul>
+              
+              <div class="details-grid">
+                @for (sec of tab.sections; track sec.title) {
+                  <div class="detail-card animate-fade-in">
+                    <h4>{{ sec.title }}</h4>
+                    <ul class="detail-list">
+                      @for (pt of sec.points; track pt) {
+                        <li>
+                          <i class="fas fa-check-circle check-icon"></i>
+                          <span>{{ pt }}</span>
+                        </li>
+                      }
+                    </ul>
+                  </div>
+                }
               </div>
             </div>
-          </div>
+          }
         </div>
 
         <!-- AI & Data Science Section -->
@@ -71,40 +77,47 @@ interface ExpertiseTab {
           <!-- Tab Bar Navigation -->
           <div class="tabs-scroll-wrapper">
             <div class="tabs-bar">
-              <button 
-                *ngFor="let tab of aiTabs" 
-                class="tab-btn" 
-                [class.active]="activeAITabId() === tab.id"
-                (click)="setActiveAITab(tab.id)"
-              >
-                <i [class]="tab.icon + ' tab-icon'"></i>
-                <span>{{ tab.label }}</span>
-              </button>
+              @for (tab of aiTabs; track tab.id) {
+                <button 
+                  class="tab-btn" 
+                  [class.active]="activeAITabId() === tab.id"
+                  (click)="setActiveAITab(tab.id)"
+                >
+                  <i [class]="tab.icon + ' tab-icon'"></i>
+                  <span>{{ tab.label }}</span>
+                </button>
+              }
             </div>
           </div>
 
           <!-- Tab Content Display -->
-          <div class="tab-content" *ngIf="activeAITab() as tab">
-            <div class="tab-header-details">
-              <div class="tab-title-group">
-                <i [class]="tab.icon + ' tab-glow-icon'"></i>
-                <h3>{{ tab.label }} Specialization</h3>
+          @if (activeAITab(); as tab) {
+            <div class="tab-content">
+              <div class="tab-header-details">
+                <div class="tab-title-group">
+                  <i [class]="tab.icon + ' tab-glow-icon'"></i>
+                  <h3>{{ tab.label }} Specialization</h3>
+                </div>
+                <p class="tab-desc">{{ tab.description }}</p>
               </div>
-              <p class="tab-desc">{{ tab.description }}</p>
-            </div>
-            
-            <div class="details-grid">
-              <div class="detail-card animate-fade-in" *ngFor="let sec of tab.sections">
-                <h4>{{ sec.title }}</h4>
-                <ul class="detail-list">
-                  <li *ngFor="let pt of sec.points">
-                    <i class="fas fa-check-circle check-icon"></i>
-                    <span>{{ pt }}</span>
-                  </li>
-                </ul>
+              
+              <div class="details-grid">
+                @for (sec of tab.sections; track sec.title) {
+                  <div class="detail-card animate-fade-in">
+                    <h4>{{ sec.title }}</h4>
+                    <ul class="detail-list">
+                      @for (pt of sec.points; track pt) {
+                        <li>
+                          <i class="fas fa-check-circle check-icon"></i>
+                          <span>{{ pt }}</span>
+                        </li>
+                      }
+                    </ul>
+                  </div>
+                }
               </div>
             </div>
-          </div>
+          }
         </div>
 
       </div>

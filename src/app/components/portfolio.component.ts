@@ -1,5 +1,4 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { CommonModule } from '@angular/common';
 
 interface Project {
   title: string;
@@ -11,7 +10,7 @@ interface Project {
 @Component({
   selector: 'app-portfolio',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   template: `
     <section class="portfolio-section section-padding">
       <div class="container">
@@ -23,21 +22,27 @@ interface Project {
           </button>
           
           <div class="portfolio-grid" #sliderContainer>
-            <div class="portfolio-card" *ngFor="let proj of projects">
-              <div class="project-icon-wrapper">
-                <i class="fas fa-project-diagram proj-icon"></i>
+            @for (proj of projects; track proj.title) {
+              <div class="portfolio-card">
+                <div class="project-icon-wrapper">
+                  <i class="fas fa-project-diagram proj-icon"></i>
+                </div>
+                <h3>{{ proj.title }}</h3>
+                <p>{{ proj.description }}</p>
+                
+                @if (proj.link) {
+                  <a [href]="proj.link" target="_blank" class="project-link">
+                    <i class="fas fa-external-link-alt"></i> Visit Live Site
+                  </a>
+                }
+                
+                <div class="tech-tags">
+                  @for (tag of proj.tags; track tag) {
+                    <span class="tag">{{ tag }}</span>
+                  }
+                </div>
               </div>
-              <h3>{{ proj.title }}</h3>
-              <p>{{ proj.description }}</p>
-              
-              <a *ngIf="proj.link" [href]="proj.link" target="_blank" class="project-link">
-                <i class="fas fa-external-link-alt"></i> Visit Live Site
-              </a>
-              
-              <div class="tech-tags">
-                <span class="tag" *ngFor="let tag of proj.tags">{{ tag }}</span>
-              </div>
-            </div>
+            }
           </div>
           
           <button class="slide-btn slide-next" (click)="scrollRight()" aria-label="Next Slide">

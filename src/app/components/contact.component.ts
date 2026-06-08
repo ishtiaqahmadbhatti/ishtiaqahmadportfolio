@@ -1,11 +1,10 @@
 import { Component, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-contact',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [ReactiveFormsModule],
   template: `
     <section class="contact-section section-padding">
       <div class="container">
@@ -54,9 +53,11 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
                   placeholder="Enter your name"
                   [class.invalid]="hasError('name')"
                 />
-                <span class="error-msg" *ngIf="hasError('name')">
-                  Name is required.
-                </span>
+                @if (hasError('name')) {
+                  <span class="error-msg">
+                    Name is required.
+                  </span>
+                }
               </div>
 
               <!-- Form Field: Email -->
@@ -69,9 +70,11 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
                   placeholder="Enter your email"
                   [class.invalid]="hasError('email')"
                 />
-                <span class="error-msg" *ngIf="hasError('email')">
-                  Please enter a valid email address.
-                </span>
+                @if (hasError('email')) {
+                  <span class="error-msg">
+                    Please enter a valid email address.
+                  </span>
+                }
               </div>
 
               <!-- Form Field: Message -->
@@ -84,9 +87,11 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
                   placeholder="Write your message here..."
                   [class.invalid]="hasError('message')"
                 ></textarea>
-                <span class="error-msg" *ngIf="hasError('message')">
-                  Message must be at least 10 characters.
-                </span>
+                @if (hasError('message')) {
+                  <span class="error-msg">
+                    Message must be at least 10 characters.
+                  </span>
+                }
               </div>
 
               <!-- Submit Trigger -->
@@ -95,22 +100,27 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
                 class="btn btn-primary submit-btn" 
                 [disabled]="isSubmitting() || contactForm.invalid"
               >
-                <span *ngIf="!isSubmitting()">Send Message</span>
-                <span *ngIf="isSubmitting()" class="spinner-wrapper">
-                  <i class="fas fa-spinner fa-spin"></i> Sending...
-                </span>
+                @if (!isSubmitting()) {
+                  <span>Send Message</span>
+                } @else {
+                  <span class="spinner-wrapper">
+                    <i class="fas fa-spinner fa-spin"></i> Sending...
+                  </span>
+                }
               </button>
             </form>
 
             <!-- Success Status alert overlay -->
-            <div class="success-toast" *ngIf="showSuccess()">
-              <i class="fas fa-check-circle success-toast-icon"></i>
-              <div>
-                <h5>Message Sent!</h5>
-                <p>Thank you for reaching out. I'll get back to you soon.</p>
+            @if (showSuccess()) {
+              <div class="success-toast">
+                <i class="fas fa-check-circle success-toast-icon"></i>
+                <div>
+                  <h5>Message Sent!</h5>
+                  <p>Thank you for reaching out. I'll get back to you soon.</p>
+                </div>
+                <button class="toast-close" (click)="closeToast()">&times;</button>
               </div>
-              <button class="toast-close" (click)="closeToast()">&times;</button>
-            </div>
+            }
           </div>
         </div>
       </div>

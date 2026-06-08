@@ -1,5 +1,4 @@
 import { Component, signal, computed } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 interface Skill {
@@ -16,7 +15,7 @@ interface SkillCategory {
 @Component({
   selector: 'app-skills',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [FormsModule],
   template: `
     <section class="skills-section section-padding">
       <div class="container">
@@ -35,40 +34,44 @@ interface SkillCategory {
           </div>
 
           <div class="filter-buttons">
-            <button 
-              *ngFor="let filter of filters" 
-              class="filter-btn" 
-              [class.active]="selectedCategory() === filter"
-              (click)="selectCategory(filter)"
-            >
-              {{ filter }}
-            </button>
+            @for (filter of filters; track filter) {
+              <button 
+                class="filter-btn" 
+                [class.active]="selectedCategory() === filter"
+                (click)="selectCategory(filter)"
+              >
+                {{ filter }}
+              </button>
+            }
           </div>
         </div>
         
         <!-- Skills Cards Grid -->
-        <div class="skills-grid" *ngIf="filteredCategories().length > 0; else noResults">
-          <div class="skill-card" *ngFor="let cat of filteredCategories()">
-            <div class="card-header">
-              <i [class]="cat.icon + ' category-icon'"></i>
-              <h3>{{ cat.title }}</h3>
-            </div>
-            <ul class="skills-list">
-              <li *ngFor="let skill of cat.skills">
-                <i [class]="skill.icon + ' skill-icon'"></i>
-                <span>{{ skill.name }}</span>
-              </li>
-            </ul>
+        @if (filteredCategories().length > 0) {
+          <div class="skills-grid">
+            @for (cat of filteredCategories(); track cat.title) {
+              <div class="skill-card">
+                <div class="card-header">
+                  <i [class]="cat.icon + ' category-icon'"></i>
+                  <h3>{{ cat.title }}</h3>
+                </div>
+                <ul class="skills-list">
+                  @for (skill of cat.skills; track skill.name) {
+                    <li>
+                      <i [class]="skill.icon + ' skill-icon'"></i>
+                      <span>{{ skill.name }}</span>
+                    </li>
+                  }
+                </ul>
+              </div>
+            }
           </div>
-        </div>
-
-        <!-- No Results Template -->
-        <ng-template #noResults>
+        } @else {
           <div class="no-results-card">
             <i class="fas fa-search-minus alert-icon"></i>
             <p>No matching skills found for "{{ searchQuery() }}". Try adjusting your search keywords!</p>
           </div>
-        </ng-template>
+        }
 
       </div>
     </section>

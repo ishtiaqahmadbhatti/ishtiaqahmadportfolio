@@ -1,10 +1,9 @@
 import { Component, HostListener, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-footer',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   template: `
     <footer class="footer">
       <div class="container footer-content">

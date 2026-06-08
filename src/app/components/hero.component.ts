@@ -1,5 +1,4 @@
 import { Component, OnInit, OnDestroy, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
 
 interface Stat {
   label: string;
@@ -12,7 +11,7 @@ interface Stat {
 @Component({
   selector: 'app-hero',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   template: `
     <section class="hero-section">
       <div class="hero-grid container">
@@ -22,8 +21,8 @@ interface Stat {
           </div>
           <h1 class="hero-title">
             I am a <br />
-            <span class="highlight-cyan">{{ typedLine1() }}<span class="cursor" *ngIf="isLine1Active()">|</span></span> <br />
-            <span class="highlight-purple">{{ typedLine2() }}<span class="cursor" *ngIf="isLine2Active()">|</span></span>
+            <span class="highlight-cyan">{{ typedLine1() }}@if (isLine1Active()) {<span class="cursor">|</span>}</span> <br />
+            <span class="highlight-purple">{{ typedLine2() }}@if (isLine2Active()) {<span class="cursor">|</span>}</span>
           </h1>
           <p class="hero-subtitle">
             Crafting robust web solutions, automating cloud-native pipelines, and engineering intelligent Agentic AI/RAG systems. Specializing in high-performance Web APIs (.NET & FastAPI), reactive single-page applications (Angular), cross-platform mobile apps (Flutter), and automated DevOps orchestration (AWS & CI/CD).
@@ -36,12 +35,14 @@ interface Stat {
 
           <!-- Dynamic Stats Dashboard Grid -->
           <div class="hero-stats">
-            <div class="stat-item" *ngFor="let stat of stats()">
-              <span class="stat-number">
-                {{ stat.isDecimal ? stat.count.toFixed(2) : stat.count }}{{ stat.suffix }}
-              </span>
-              <span class="stat-label">{{ stat.label }}</span>
-            </div>
+            @for (stat of stats(); track stat.label) {
+              <div class="stat-item">
+                <span class="stat-number">
+                  {{ stat.isDecimal ? stat.count.toFixed(2) : stat.count }}{{ stat.suffix }}
+                </span>
+                <span class="stat-label">{{ stat.label }}</span>
+              </div>
+            }
           </div>
         </div>
 
