@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { HeroComponent } from './hero.component';
 import { AboutComponent } from './about.component';
 import { SkillsComponent } from './skills.component';
@@ -17,8 +17,9 @@ import { ContactComponent } from './contact.component';
     ExpertiseComponent,
     PortfolioComponent,
     ResumeComponent,
-    ContactComponent
+    ContactComponent,
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <app-hero id="home"></app-hero>
     <app-about id="about"></app-about>
@@ -27,6 +28,6 @@ import { ContactComponent } from './contact.component';
     <app-portfolio id="portfolio"></app-portfolio>
     <app-resume id="resume"></app-resume>
     <app-contact id="contact"></app-contact>
-  `
+  `,
 })
 export class HomeComponent {}
